@@ -1,0 +1,7 @@
+# Ignore build and temporary files
+build/
+*.o
+*.out
+*.log
+CMakeCache.txt
+CMakeFiles/

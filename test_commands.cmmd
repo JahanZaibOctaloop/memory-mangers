@@ -1,0 +1,6 @@
+INSERT 32 "hello world"
+INSERT 16 "test"
+READ 0
+UPDATE 0 "new data"
+DELETE 1
+DUMP

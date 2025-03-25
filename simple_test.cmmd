@@ -1,0 +1,5 @@
+# Simple test
+INSERT 10 "first"
+DUMP
+INSERT 5 "second"
+DUMP
