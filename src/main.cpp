@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <cctype>
 
-// Helper function to trim whitespace
 std::string trim(const std::string& str) {
     size_t first = str.find_first_not_of(" \t");
     if (std::string::npos == first) return "";
@@ -13,21 +12,19 @@ std::string trim(const std::string& str) {
     return str.substr(first, (last - first + 1));
 }
 
-// Helper function to extract quoted string
 std::string extractQuotedString(std::istringstream& iss) {
     std::string data;
     char ch;
-    iss >> std::ws; // Skip whitespace
-    iss >> ch; // Read first quote
+    iss >> std::ws; 
+    iss >> ch; 
     
     if (ch != '"') {
-        // Not a quoted string, read back the character
         iss.unget();
         iss >> data;
         return data;
     }
     
-    std::getline(iss, data, '"'); // Read until closing quote
+    std::getline(iss, data, '"'); 
     return data;
 }
 
@@ -121,7 +118,6 @@ int main(int argc, char** argv) {
             std::cerr << "Exception processing line " << line_number << ": " << e.what() << std::endl;
         }
 
-        // Clear any error flags that might have been set
         iss.clear();
     }
 

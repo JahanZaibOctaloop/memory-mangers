@@ -5,8 +5,8 @@
 #include <map>
 
 std::vector<MemoryBlock> blocks;
-std::map<int, MemoryBlock*> allocatedBlocks;  // Maps IDs to allocated blocks
-int nextId = 0;  // Tracks the next available ID
+std::map<int, MemoryBlock*> allocatedBlocks;  
+int nextId = 0;  
 
 void initMemoryManager() {
     blocks.clear();
@@ -29,7 +29,6 @@ uint16_t nextPowerOfTwo(uint16_t size) {
 int insert(uint16_t size, const std::string& data) {
     uint16_t requiredSize = static_cast<uint16_t>(nextPowerOfTwo(std::max((size_t)(data.size() + 1), (size_t)size)));
 
-    // Find best fit (using indices instead of iterators)
     int bestFitIndex = -1;
     for (size_t i = 0; i < blocks.size(); ++i) {
         if (!blocks[i].allocated && blocks[i].size >= requiredSize) {
@@ -44,7 +43,6 @@ int insert(uint16_t size, const std::string& data) {
         return -1;
     }
 
-    // Split block if necessary
     if (blocks[bestFitIndex].size > requiredSize) {
         MemoryBlock newBlock = {
             static_cast<uint16_t>(blocks[bestFitIndex].start + requiredSize),
@@ -56,11 +54,10 @@ int insert(uint16_t size, const std::string& data) {
         blocks[bestFitIndex].size = requiredSize;
     }
 
-    // Allocate the block
     blocks[bestFitIndex].allocated = true;
-    blocks[bestFitIndex].data = data;  // Ensure data is correctly assigned
+    blocks[bestFitIndex].data = data; 
     int id = nextId++;
-    allocatedBlocks[id] = &blocks[bestFitIndex];  // Store pointer to the allocated block
+    allocatedBlocks[id] = &blocks[bestFitIndex];  
 
     return id;
 }
@@ -82,7 +79,6 @@ void deleteBlock(int id) {
         block->data = "";
         allocatedBlocks.erase(it);
 
-        // Merge adjacent free blocks
         bool merged;
         do {
             merged = false;
@@ -108,13 +104,12 @@ void update(int id, const std::string& newData) {
     auto it = allocatedBlocks.find(id);
     if (it != allocatedBlocks.end()) {
         MemoryBlock* block = it->second;
-        if (newData.size() <= block->size - 1) {  // -1 for null terminator
+        if (newData.size() <= block->size - 1) {  
             block->data = newData;
         } else {
-            // Need to reallocate
             deleteBlock(id);
             int newId = insert(newData.size(), newData);
-            allocatedBlocks[newId] = block;  // Reassign the block to new ID
+            allocatedBlocks[newId] = block;  
         }
     } else {
         std::cout << "Nothing at " << id << std::endl;

@@ -13,7 +13,6 @@ struct MemoryBlock {
     std::string data;
 };
 
-// Function declarations
 void initMemoryManager();
 int insert(uint16_t size, const std::string& data);
 void find(int id);
